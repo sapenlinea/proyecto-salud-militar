@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useAuth } from '../../core/auth/auth.store.tsx';
-import { ROUTES } from '../router/routes';
+import { ROUTES } from '../router/routes.constants';
 
 export default function Topbar() {
   const { user, logout } = useAuth();

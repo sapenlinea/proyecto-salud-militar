@@ -4,7 +4,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { ROUTES } from '../router/routes';
+import { ROUTES } from '../router/routes.constants';
 
 const navItems = [
   { path: ROUTES.dashboard, label: 'Dashboard' },

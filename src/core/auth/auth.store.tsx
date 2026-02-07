@@ -15,10 +15,15 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+function getInitialToken(): string | null {
+  if (typeof sessionStorage === 'undefined') return null;
+  return getStoredToken();
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(() => getStoredToken());
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [token, setToken] = useState<string | null>(getInitialToken);
+  const [isInitialized, setIsInitialized] = useState(() => !getInitialToken());
 
   const initialize = useCallback(async () => {
     const stored = getStoredToken();

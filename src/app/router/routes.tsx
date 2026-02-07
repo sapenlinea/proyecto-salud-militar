@@ -12,20 +12,9 @@ import ReportesHome from '../../features/reportes/pages/ReportesHome.tsx';
 import UsuariosPage from '../../features/admin/pages/UsuariosPage.tsx';
 import RolesPage from '../../features/admin/pages/RolesPage.tsx';
 import PermisosPage from '../../features/admin/pages/PermisosPage.tsx';
+import { ROUTES } from './routes.constants';
 
-export const ROUTES = {
-  login: '/login',
-  dashboard: '/dashboard',
-  hce: '/hce',
-  enfermeria: '/enfermeria',
-  farmacia: '/farmacia',
-  admisiones: '/admisiones',
-  agendamiento: '/agendamiento',
-  reportes: '/reportes',
-  usuarios: '/admin/usuarios',
-  roles: '/admin/roles',
-  permisos: '/admin/permisos',
-} as const;
+export { ROUTES } from './routes.constants';
 
 export function AppRoutes() {
   return (
