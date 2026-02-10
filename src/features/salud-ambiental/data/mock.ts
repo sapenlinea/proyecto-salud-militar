@@ -1,0 +1,163 @@
+import type {
+  SanitaryInspection,
+  EnvironmentalRiskFactor,
+  EventReport,
+  GeoLocation,
+  ImprovementPlan,
+} from '../types';
+
+export const MOCK_INSPECTIONS: SanitaryInspection[] = [
+  {
+    id: 'i1',
+    establishment: 'Restaurante La Estrella',
+    address: 'Calle 10 # 5-20',
+    type: 'Alimentos y bebidas',
+    date: '2025-02-01',
+    inspector: 'Carlos Mendoza',
+    score: 85,
+    status: 'cumple',
+    findings: 'Condiciones adecuadas. Recomendación: reforzar rotulación de productos.',
+  },
+  {
+    id: 'i2',
+    establishment: 'Farmacia San José',
+    address: 'Carrera 6 # 12-34',
+    type: 'Farmacia',
+    date: '2025-01-28',
+    inspector: 'María Gómez',
+    score: 92,
+    status: 'cumple',
+  },
+  {
+    id: 'i3',
+    establishment: 'Piscina Municipal',
+    address: 'Parque Principal',
+    type: 'Piscinas',
+    date: '2025-01-15',
+    inspector: 'Carlos Mendoza',
+    score: 65,
+    status: 'cumple_parcial',
+    findings: 'Niveles de cloro por debajo del mínimo. Requiere seguimiento.',
+  },
+];
+
+export const MOCK_RISK_FACTORS: EnvironmentalRiskFactor[] = [
+  {
+    id: 'r1',
+    category: 'Agua',
+    description: 'Fuente superficial sin tratamiento adecuado',
+    location: 'Vereda El Rosario',
+    level: 'alto',
+    detectedAt: '2025-01-20',
+    status: 'activo',
+  },
+  {
+    id: 'r2',
+    category: 'Aire',
+    description: 'Quema de residuos en zona periférica',
+    location: 'Sector industrial norte',
+    level: 'medio',
+    detectedAt: '2025-02-01',
+    status: 'en_control',
+  },
+  {
+    id: 'r3',
+    category: 'Residuos',
+    description: 'Acumulación de residuos sólidos en vía pública',
+    location: 'Calle 15 entre carreras 8 y 10',
+    level: 'medio',
+    detectedAt: '2025-02-05',
+    status: 'activo',
+  },
+];
+
+export const MOCK_EVENT_REPORTS: EventReport[] = [
+  {
+    id: 'e1',
+    date: '2025-02-06',
+    type: 'Derrame',
+    description: 'Posible derrame de sustancias en alcantarillado',
+    location: 'Carrera 5 # 10-20',
+    lat: 0.8291,
+    lng: -77.6428,
+    reportedBy: 'Comunidad',
+    status: 'en_curso',
+  },
+  {
+    id: 'e2',
+    date: '2025-02-04',
+    type: 'Vectores',
+    description: 'Focos de mosquitos identificados en zona residencial',
+    location: 'Barrio Centro',
+    lat: 0.8285,
+    lng: -77.6410,
+    reportedBy: 'Promotor de salud',
+    status: 'atendido',
+  },
+];
+
+export const MOCK_GEO_LOCATIONS: GeoLocation[] = [
+  {
+    id: 'g1',
+    name: 'Restaurante La Estrella',
+    type: 'Establecimiento',
+    lat: 0.8295,
+    lng: -77.6430,
+    address: 'Calle 10 # 5-20',
+    riskLevel: 'Bajo',
+    lastInspection: '2025-02-01',
+  },
+  {
+    id: 'g2',
+    name: 'Fuente agua Vereda El Rosario',
+    type: 'Agua',
+    lat: 0.8350,
+    lng: -77.6500,
+    address: 'Vereda El Rosario',
+    riskLevel: 'Alto',
+    lastInspection: '2025-01-20',
+  },
+  {
+    id: 'g3',
+    name: 'Punto crítico residuos',
+    type: 'Residuos',
+    lat: 0.8280,
+    lng: -77.6400,
+    address: 'Calle 15 entre carreras 8 y 10',
+    riskLevel: 'Medio',
+  },
+];
+
+export const MOCK_IMPROVEMENT_PLANS: ImprovementPlan[] = [
+  {
+    id: 'p1',
+    title: 'Mejora del sistema de tratamiento de agua',
+    description: 'Implementar planta de tratamiento en Vereda El Rosario',
+    relatedTo: 'Agua',
+    startDate: '2025-02-01',
+    endDate: '2025-06-30',
+    responsible: 'Carlos Mendoza',
+    status: 'en_ejecución',
+    progress: 25,
+  },
+  {
+    id: 'p2',
+    title: 'Control de vectores en zona centro',
+    description: 'Fumigación y eliminación de criaderos',
+    relatedTo: 'Vectores',
+    startDate: '2025-02-05',
+    responsible: 'María Gómez',
+    status: 'en_ejecución',
+    progress: 60,
+  },
+  {
+    id: 'p3',
+    title: 'Capacitación en manipulación de alimentos',
+    description: 'Talleres a establecimientos de alimentos',
+    relatedTo: 'Alimentos',
+    startDate: '2025-03-01',
+    endDate: '2025-03-31',
+    responsible: 'Carlos Mendoza',
+    status: 'pendiente',
+  },
+];

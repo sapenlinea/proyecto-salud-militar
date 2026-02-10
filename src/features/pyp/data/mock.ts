@@ -1,0 +1,168 @@
+import type {
+  PypProgram,
+  TargetPopulation,
+  PypActivity,
+  CoverageIndicator,
+  PypFollowUp,
+} from '../types';
+
+export const MOCK_PYP_PROGRAMS: PypProgram[] = [
+  {
+    id: 'p1',
+    code: 'PYP-001',
+    name: 'Control prenatal',
+    description: 'Seguimiento y control del embarazo',
+    startDate: '2024-01-01',
+    status: 'activo',
+    responsible: 'María Gómez',
+  },
+  {
+    id: 'p2',
+    code: 'PYP-002',
+    name: 'Crecimiento y desarrollo',
+    description: 'Control del menor de 5 años',
+    startDate: '2024-01-01',
+    status: 'activo',
+    responsible: 'Juan Pérez',
+  },
+  {
+    id: 'p3',
+    code: 'PYP-003',
+    name: 'Hipertensión y diabetes',
+    description: 'Programa de enfermedades crónicas',
+    startDate: '2024-03-01',
+    status: 'activo',
+    responsible: 'Carlos Mendoza',
+  },
+];
+
+export const MOCK_TARGET_POPULATION: TargetPopulation[] = [
+  {
+    id: 't1',
+    programId: 'p1',
+    programName: 'Control prenatal',
+    group: 'Gestantes',
+    description: 'Mujeres embarazadas en primer trimestre',
+    estimatedSize: 85,
+    registeredSize: 72,
+    coverage: 84.7,
+  },
+  {
+    id: 't2',
+    programId: 'p2',
+    programName: 'Crecimiento y desarrollo',
+    group: 'Menores 5 años',
+    description: 'Niños y niñas menores de 5 años',
+    estimatedSize: 320,
+    registeredSize: 285,
+    coverage: 89.1,
+  },
+  {
+    id: 't3',
+    programId: 'p3',
+    programName: 'Hipertensión y diabetes',
+    group: 'Adultos 45+',
+    description: 'Pacientes con diagnóstico de HTA o DM',
+    estimatedSize: 450,
+    registeredSize: 380,
+    coverage: 84.4,
+  },
+];
+
+export const MOCK_PYP_ACTIVITIES: PypActivity[] = [
+  {
+    id: 'a1',
+    programId: 'p1',
+    programName: 'Control prenatal',
+    name: 'Charla alimentación gestante',
+    type: 'Educación',
+    date: '2025-02-05',
+    participants: 15,
+    responsible: 'María Gómez',
+  },
+  {
+    id: 'a2',
+    programId: 'p2',
+    programName: 'Crecimiento y desarrollo',
+    name: 'Valoración desarrollo motor',
+    type: 'Consulta',
+    date: '2025-02-06',
+    participants: 28,
+    responsible: 'Juan Pérez',
+  },
+  {
+    id: 'a3',
+    programId: 'p3',
+    programName: 'Hipertensión y diabetes',
+    name: 'Taller automonitoreo glicemia',
+    type: 'Educación',
+    date: '2025-02-04',
+    participants: 22,
+    responsible: 'Carlos Mendoza',
+  },
+];
+
+export const MOCK_COVERAGE_INDICATORS: CoverageIndicator[] = [
+  {
+    id: 'c1',
+    programId: 'p1',
+    programName: 'Control prenatal',
+    indicator: 'Primer control antes de semana 14',
+    target: 85,
+    achieved: 72,
+    unit: 'gestantes',
+    percentage: 84.7,
+  },
+  {
+    id: 'c2',
+    programId: 'p2',
+    programName: 'Crecimiento y desarrollo',
+    indicator: 'Controles en menores de 1 año',
+    target: 95,
+    achieved: 88,
+    unit: 'niños',
+    percentage: 92.6,
+  },
+  {
+    id: 'c3',
+    programId: 'p3',
+    programName: 'Hipertensión y diabetes',
+    indicator: 'Controles trimestrales DM',
+    target: 90,
+    achieved: 78,
+    unit: 'pacientes',
+    percentage: 86.7,
+  },
+];
+
+export const MOCK_PYP_FOLLOW_UPS: PypFollowUp[] = [
+  {
+    id: 'f1',
+    programId: 'p1',
+    programName: 'Control prenatal',
+    date: '2025-02-06',
+    type: 'Revisión',
+    notes: 'Verificar citas pendientes de gestantes de bajo riesgo.',
+    responsible: 'María Gómez',
+    nextAction: 'Llamada de recordatorio a 5 gestantes',
+  },
+  {
+    id: 'f2',
+    programId: 'p2',
+    programName: 'Crecimiento y desarrollo',
+    date: '2025-02-05',
+    type: 'Seguimiento',
+    notes: 'Valoración de casos con desarrollo motor alterado.',
+    responsible: 'Juan Pérez',
+    nextAction: 'Citación a fisioterapia',
+  },
+  {
+    id: 'f3',
+    programId: 'p3',
+    programName: 'Hipertensión y diabetes',
+    date: '2025-02-04',
+    type: 'Control',
+    notes: 'Revisar adherencia al tratamiento en pacientes con HbA1c > 7.',
+    responsible: 'Carlos Mendoza',
+  },
+];

@@ -1,0 +1,127 @@
+import type {
+  PacienteCAC,
+  DiagnosticoCAC,
+  CostoAcumulado,
+  IndicadorCAC,
+  ReporteRegulatorio,
+} from '../types';
+
+export const MOCK_PACIENTES_CAC: PacienteCAC[] = [
+  {
+    id: 'p1',
+    patientId: 'pat1',
+    patientDocument: '52345678',
+    patientName: 'Juan Pérez García',
+    eps: 'Sura',
+    diagnosis: 'Linfoma Hodgkin',
+    diagnosisCode: 'C81',
+    registrationDate: '2024-03-15',
+    status: 'activo',
+    responsiblePhysician: 'Dr. Martínez',
+    lastControl: '2025-02-01',
+  },
+  {
+    id: 'p2',
+    patientId: 'pat2',
+    patientDocument: '80123456',
+    patientName: 'María López Martínez',
+    eps: 'Nueva EPS',
+    diagnosis: 'Insuficiencia renal crónica',
+    diagnosisCode: 'N18',
+    registrationDate: '2023-08-20',
+    status: 'activo',
+    responsiblePhysician: 'Dr. Rodríguez',
+    lastControl: '2025-02-05',
+  },
+  {
+    id: 'p3',
+    patientId: 'pat3',
+    patientDocument: '10987654',
+    patientName: 'Carlos Rodríguez Silva',
+    eps: 'Sanitas',
+    diagnosis: 'Hemofilia A',
+    diagnosisCode: 'D66',
+    registrationDate: '2022-01-10',
+    status: 'activo',
+    responsiblePhysician: 'Dr. Pérez',
+    lastControl: '2025-01-28',
+  },
+  {
+    id: 'p4',
+    patientId: 'pat4',
+    patientDocument: '52555123',
+    patientName: 'Ana Martínez Torres',
+    eps: 'Compensar',
+    diagnosis: 'Leucemia mieloide aguda',
+    diagnosisCode: 'C92.0',
+    registrationDate: '2024-11-05',
+    status: 'activo',
+    responsiblePhysician: 'Dr. Martínez',
+    lastControl: '2025-02-03',
+  },
+];
+
+export const MOCK_DIAGNOSTICOS_CAC: DiagnosticoCAC[] = [
+  { id: 'd1', code: 'C81', name: 'Linfoma Hodgkin', category: 'oncologico', treatmentType: 'Quimioterapia', patientCount: 3 },
+  { id: 'd2', code: 'N18', name: 'Insuficiencia renal crónica', category: 'renal', treatmentType: 'Diálisis/Hemodiálisis', patientCount: 5 },
+  { id: 'd3', code: 'D66', name: 'Hemofilia A', category: 'hematologico', treatmentType: 'Factor VIII', patientCount: 2 },
+  { id: 'd4', code: 'C92.0', name: 'Leucemia mieloide aguda', category: 'oncologico', treatmentType: 'Quimioterapia', patientCount: 2 },
+  { id: 'd5', code: 'Z94', name: 'Estado post trasplante', category: 'trasplante', treatmentType: 'Inmunosupresión', patientCount: 1 },
+  { id: 'd6', code: 'C50', name: 'Cáncer de mama', category: 'oncologico', treatmentType: 'Quimioterapia/Cirugía', patientCount: 4 },
+];
+
+export const MOCK_COSTOS_ACUMULADOS: CostoAcumulado[] = [
+  {
+    id: 'c1',
+    patientId: 'pat1',
+    patientDocument: '52345678',
+    patientName: 'Juan Pérez',
+    diagnosis: 'Linfoma Hodgkin',
+    period: '2025-01',
+    totalCost: 8500000,
+    medications: 5200000,
+    procedures: 2100000,
+    hospitalization: 800000,
+    others: 400000,
+  },
+  {
+    id: 'c2',
+    patientId: 'pat2',
+    patientDocument: '80123456',
+    patientName: 'María López',
+    diagnosis: 'Insuficiencia renal crónica',
+    period: '2025-01',
+    totalCost: 4200000,
+    medications: 1200000,
+    procedures: 2500000,
+    hospitalization: 0,
+    others: 500000,
+  },
+  {
+    id: 'c3',
+    patientId: 'pat3',
+    patientDocument: '10987654',
+    patientName: 'Carlos Rodríguez',
+    diagnosis: 'Hemofilia A',
+    period: '2025-01',
+    totalCost: 12500000,
+    medications: 11000000,
+    procedures: 800000,
+    hospitalization: 200000,
+    others: 500000,
+  },
+];
+
+export const MOCK_INDICADORES_CAC: IndicadorCAC[] = [
+  { id: 'i1', name: 'Pacientes CAC activos', value: 12, unit: 'pacientes', period: '2025-01', category: 'gestion' },
+  { id: 'i2', name: 'Cobertura programa CAC', value: 95, unit: '%', target: 95, period: '2025-01', category: 'cobertura' },
+  { id: 'i3', name: 'Adherencia al tratamiento', value: 88, unit: '%', target: 90, period: '2025-01', category: 'calidad' },
+  { id: 'i4', name: 'Costo promedio por paciente', value: 6500000, unit: 'COP', period: '2025-01', category: 'costo' },
+  { id: 'i5', name: 'Controles realizados en plazo', value: 92, unit: '%', target: 95, period: '2025-01', category: 'calidad' },
+];
+
+export const MOCK_REPORTES_REGULATORIOS: ReporteRegulatorio[] = [
+  { id: 'r1', reportType: 'mensual', period: '2025-01', status: 'enviado', sentDate: '2025-02-10', patientCount: 12, totalCost: 78500000 },
+  { id: 'r2', reportType: 'trimestral', period: '2024-Q4', status: 'validado', sentDate: '2025-01-20', patientCount: 11, totalCost: 215000000 },
+  { id: 'r3', reportType: 'mensual', period: '2025-02', status: 'borrador', patientCount: 12, totalCost: 0 },
+];

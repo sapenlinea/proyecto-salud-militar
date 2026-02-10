@@ -1,0 +1,118 @@
+import type { IpsExterna, Convenio, ServicioExterno, Derivacion } from '../types';
+
+export const MOCK_IPS_EXTERNAS: IpsExterna[] = [
+  {
+    id: 'ips1',
+    nit: '890123456-1',
+    name: 'Clínica San José',
+    type: 'clinica',
+    address: 'Calle 45 #12-34',
+    city: 'Pasto',
+    phone: '3124567890',
+    email: 'contacto@clinicasanjose.com',
+    status: 'activo',
+  },
+  {
+    id: 'ips2',
+    nit: '890234567-2',
+    name: 'Laboratorio Central',
+    type: 'laboratorio',
+    address: 'Carrera 20 #15-67',
+    city: 'Pasto',
+    phone: '3225678901',
+    status: 'activo',
+  },
+  {
+    id: 'ips3',
+    nit: '890345678-3',
+    name: 'Hospital Universitario',
+    type: 'hospital',
+    address: 'Avenida Panamericana Km 5',
+    city: 'Pasto',
+    phone: '3026789012',
+    email: 'urgencias@hospuni.edu.co',
+    status: 'activo',
+  },
+  {
+    id: 'ips4',
+    nit: '890456789-4',
+    name: 'Centro Diagnóstico Imagenología',
+    type: 'imagenologia',
+    address: 'Calle 18 #22-10',
+    city: 'Pasto',
+    phone: '3157890123',
+    status: 'activo',
+  },
+];
+
+export const MOCK_CONVENIOS: Convenio[] = [
+  {
+    id: 'c1',
+    ipsExternaId: 'ips1',
+    ipsExternaName: 'Clínica San José',
+    agreementNumber: 'CONV-2024-001',
+    startDate: '2024-01-15',
+    endDate: '2025-01-14',
+    type: 'servicios_generales',
+    status: 'vigente',
+  },
+  {
+    id: 'c2',
+    ipsExternaId: 'ips2',
+    ipsExternaName: 'Laboratorio Central',
+    agreementNumber: 'CONV-2024-002',
+    startDate: '2024-02-01',
+    endDate: '2025-01-31',
+    type: 'laboratorio',
+    status: 'vigente',
+  },
+  {
+    id: 'c3',
+    ipsExternaId: 'ips3',
+    ipsExternaName: 'Hospital Universitario',
+    agreementNumber: 'CONV-2023-015',
+    startDate: '2023-06-01',
+    endDate: '2024-05-31',
+    type: 'urgencias',
+    status: 'vencido',
+  },
+  {
+    id: 'c4',
+    ipsExternaId: 'ips3',
+    ipsExternaName: 'Hospital Universitario',
+    agreementNumber: 'CONV-2024-020',
+    startDate: '2024-06-01',
+    endDate: '2025-05-31',
+    type: 'hospitalizacion',
+    status: 'vigente',
+  },
+  {
+    id: 'c5',
+    ipsExternaId: 'ips4',
+    ipsExternaName: 'Centro Diagnóstico Imagenología',
+    agreementNumber: 'CONV-2024-008',
+    startDate: '2024-03-15',
+    endDate: '2025-03-14',
+    type: 'imagenologia',
+    status: 'vigente',
+  },
+];
+
+export const MOCK_SERVICIOS_EXTERNOS: ServicioExterno[] = [
+  { id: 's1', ipsExternaId: 'ips1', ipsExternaName: 'Clínica San José', serviceCode: '890201', serviceName: 'Consulta especialista', category: 'Consulta', unitPrice: 95000, available: true },
+  { id: 's2', ipsExternaId: 'ips1', ipsExternaName: 'Clínica San José', serviceCode: '510001', serviceName: 'Procedimiento menor', category: 'Procedimientos', unitPrice: 250000, available: true },
+  { id: 's3', ipsExternaId: 'ips2', ipsExternaName: 'Laboratorio Central', serviceCode: '300101', serviceName: 'Hemograma', category: 'Laboratorio', unitPrice: 28000, available: true },
+  { id: 's4', ipsExternaId: 'ips2', ipsExternaName: 'Laboratorio Central', serviceCode: '300201', serviceName: 'Perfil lipídico', category: 'Laboratorio', unitPrice: 85000, available: true },
+  { id: 's5', ipsExternaId: 'ips2', ipsExternaName: 'Laboratorio Central', serviceCode: '300301', serviceName: 'Creatinina', category: 'Laboratorio', unitPrice: 22000, available: false },
+  { id: 's6', ipsExternaId: 'ips3', ipsExternaName: 'Hospital Universitario', serviceCode: '701001', serviceName: 'Urgencias general', category: 'Urgencias', unitPrice: 180000, available: true },
+  { id: 's7', ipsExternaId: 'ips3', ipsExternaName: 'Hospital Universitario', serviceCode: '702001', serviceName: 'Día de hospitalización', category: 'Hospitalización', unitPrice: 450000, available: true },
+  { id: 's8', ipsExternaId: 'ips4', ipsExternaName: 'Centro Diagnóstico Imagenología', serviceCode: '412001', serviceName: 'RX tórax', category: 'Imagenología', unitPrice: 98000, available: true },
+  { id: 's9', ipsExternaId: 'ips4', ipsExternaName: 'Centro Diagnóstico Imagenología', serviceCode: '413001', serviceName: 'Ecografía abdominal', category: 'Imagenología', unitPrice: 125000, available: true },
+];
+
+export const MOCK_DERIVACIONES: Derivacion[] = [
+  { id: 'd1', patientDocument: '52345678', patientName: 'Juan Pérez', ipsExternaId: 'ips2', ipsExternaName: 'Laboratorio Central', service: 'Perfil lipídico', reason: 'Dislipidemia en seguimiento', date: '2025-02-01', status: 'atendida', appointmentDate: '2025-02-03' },
+  { id: 'd2', patientDocument: '80123456', patientName: 'María López', ipsExternaId: 'ips4', ipsExternaName: 'Centro Diagnóstico Imagenología', service: 'Ecografía abdominal', reason: 'Dolor abdominal', date: '2025-02-05', status: 'confirmada', appointmentDate: '2025-02-08' },
+  { id: 'd3', patientDocument: '10987654', patientName: 'Carlos Rodríguez', ipsExternaId: 'ips3', ipsExternaName: 'Hospital Universitario', service: 'Urgencias general', reason: 'Dolor precordial', date: '2025-02-06', status: 'solicitada' },
+  { id: 'd4', patientDocument: '52555123', patientName: 'Ana Martínez', ipsExternaId: 'ips1', ipsExternaName: 'Clínica San José', service: 'Consulta especialista', reason: 'Evaluación cardiología', date: '2025-02-02', status: 'confirmada', appointmentDate: '2025-02-10' },
+];
