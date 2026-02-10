@@ -22,7 +22,7 @@ export default function SurgicalReports({ reports }: SurgicalReportsProps) {
   const [periodFilter, setPeriodFilter] = useState<string>(reports[0]?.period ?? '');
 
   const report = reports.find((r) => r.period === periodFilter) ?? reports[0];
-  const maxProcedureCount = report?.byProcedure.reduce((max, p) => Math.max(max, p.count), 0) ?? 1;
+  const maxProcedureCount = report?.byProcedure?.reduce((max, p) => Math.max(max, p.count), 0) ?? 1;
 
   return (
     <Box>

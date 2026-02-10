@@ -17,6 +17,8 @@ interface DiagnosesSectionProps {
   diagnoses: Diagnosis[];
   cie10Options: Cie10Item[];
   onAdd?: (d: Omit<Diagnosis, 'id'>) => void;
+  onUpdate?: (id: string, updates: Partial<Diagnosis>) => void;
+  onDelete?: (id: string) => void;
   patientId?: string;
   readOnly?: boolean;
 }
@@ -31,12 +33,17 @@ export default function DiagnosesSection({
   diagnoses,
   cie10Options,
   onAdd,
+  onUpdate,
+  onDelete,
   patientId,
   readOnly = false,
 }: DiagnosesSectionProps) {
   const [selectedCie, setSelectedCie] = useState<Cie10Item | null>(null);
   const [type, setType] = useState<Diagnosis['type']>('principal');
   const [notes, setNotes] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editType, setEditType] = useState<Diagnosis['type']>('principal');
+  const [editNotes, setEditNotes] = useState('');
 
   function handleAdd() {
     if (!onAdd || !patientId || !selectedCie) return;
@@ -68,13 +75,38 @@ export default function DiagnosesSection({
         <TableBody>
           {diagnoses.map((d) => (
             <TableRow key={d.id}>
-              <TableCell>
-                <Chip label={d.cie10Code} size="small" variant="outlined" />
-              </TableCell>
-              <TableCell>{d.cie10Description}</TableCell>
-              <TableCell>{TYPE_LABELS[d.type]}</TableCell>
-              <TableCell>{d.date}</TableCell>
-              <TableCell>{d.notes ?? '—'}</TableCell>
+              {editingId === d.id ? (
+                <TableCell colSpan={5}>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' }}>
+                    <TextField select size="small" label="Tipo" value={editType} onChange={(e) => setEditType(e.target.value as Diagnosis['type'])} sx={{ minWidth: 140 }}>
+                      {(Object.keys(TYPE_LABELS) as Diagnosis['type'][]).map((t) => (
+                        <MenuItem key={t} value={t}>{TYPE_LABELS[t]}</MenuItem>
+                      ))}
+                    </TextField>
+                    <TextField size="small" label="Notas" value={editNotes} onChange={(e) => setEditNotes(e.target.value)} sx={{ minWidth: 180 }} />
+                    <Button size="small" variant="contained" onClick={() => { onUpdate?.(d.id, { type: editType, notes: editNotes || undefined }); setEditingId(null); }}>Guardar</Button>
+                    <Button size="small" variant="outlined" onClick={() => setEditingId(null)}>Cancelar</Button>
+                  </Box>
+                </TableCell>
+              ) : (
+                <>
+                  <TableCell><Chip label={d.cie10Code} size="small" variant="outlined" /></TableCell>
+                  <TableCell>{d.cie10Description}</TableCell>
+                  <TableCell>{TYPE_LABELS[d.type]}</TableCell>
+                  <TableCell>{d.date}</TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexWrap: 'wrap' }}>
+                      {d.notes ?? '—'}
+                      {!readOnly && (onUpdate || onDelete) && (
+                        <Box sx={{ ml: 1, display: 'inline-flex', gap: 0.5 }}>
+                          {onUpdate && <Button size="small" variant="outlined" onClick={() => { setEditingId(d.id); setEditType(d.type); setEditNotes(d.notes ?? ''); }}>Editar</Button>}
+                          {onDelete && <Button size="small" variant="outlined" color="error" onClick={() => onDelete(d.id)}>Eliminar</Button>}
+                        </Box>
+                      )}
+                    </Box>
+                  </TableCell>
+                </>
+              )}
             </TableRow>
           ))}
         </TableBody>

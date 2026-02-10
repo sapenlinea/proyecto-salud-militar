@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
@@ -7,6 +8,8 @@ import type { Patient } from '../types.js';
 
 interface PatientCardProps {
   patient: Patient;
+  onEdit?: (patient: Patient) => void;
+  onDelete?: (patient: Patient) => void;
 }
 
 function formatDate(iso: string) {
@@ -29,7 +32,7 @@ function Field({ label, value }: { label: string; value: string }) {
   );
 }
 
-export default function PatientCard({ patient }: PatientCardProps) {
+export default function PatientCard({ patient, onEdit, onDelete }: PatientCardProps) {
   const fullName = [patient.firstName, patient.secondName, patient.lastName, patient.secondLastName]
     .filter(Boolean)
     .join(' ');
@@ -37,9 +40,23 @@ export default function PatientCard({ patient }: PatientCardProps) {
   return (
     <Card variant="outlined" sx={{ mb: 2 }}>
       <CardContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2, flexWrap: 'wrap' }}>
           <Typography variant="h6">Ficha del paciente</Typography>
           <Chip label={patient.eps} size="small" color="primary" variant="outlined" />
+          {(onEdit || onDelete) && (
+            <Box sx={{ ml: 'auto', display: 'flex', gap: 1 }}>
+              {onEdit && (
+                <Button size="small" variant="outlined" onClick={() => onEdit(patient)}>
+                  Editar
+                </Button>
+              )}
+              {onDelete && (
+                <Button size="small" variant="outlined" color="error" onClick={() => onDelete(patient)}>
+                  Eliminar
+                </Button>
+              )}
+            </Box>
+          )}
         </Box>
         <Box
           sx={{

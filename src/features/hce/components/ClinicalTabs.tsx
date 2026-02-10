@@ -31,6 +31,16 @@ interface ClinicalTabsProps {
   cie10Options: Cie10Item[];
   onAddEvolution?: (e: Omit<MedicalEvolution, 'id' | 'patientId'>) => void;
   onAddDiagnosis?: (d: Omit<Diagnosis, 'id'>) => void;
+  onUpdateEvolution?: (id: string, updates: Partial<MedicalEvolution>) => void;
+  onDeleteEvolution?: (id: string) => void;
+  onUpdateDiagnosis?: (id: string, updates: Partial<Diagnosis>) => void;
+  onDeleteDiagnosis?: (id: string) => void;
+  onAddProcedure?: (p: Omit<Procedure, 'id' | 'patientId'>) => void;
+  onUpdateProcedure?: (id: string, updates: Partial<Procedure>) => void;
+  onDeleteProcedure?: (id: string) => void;
+  onAddMedication?: (m: Omit<PrescribedMedication, 'id' | 'patientId'>) => void;
+  onUpdateMedication?: (id: string, updates: Partial<PrescribedMedication>) => void;
+  onDeleteMedication?: (id: string) => void;
 }
 
 export default function ClinicalTabs({
@@ -44,6 +54,16 @@ export default function ClinicalTabs({
   cie10Options,
   onAddEvolution,
   onAddDiagnosis,
+  onUpdateEvolution,
+  onDeleteEvolution,
+  onUpdateDiagnosis,
+  onDeleteDiagnosis,
+  onAddProcedure,
+  onUpdateProcedure,
+  onDeleteProcedure,
+  onAddMedication,
+  onUpdateMedication,
+  onDeleteMedication,
 }: ClinicalTabsProps) {
   const [tab, setTab] = useState(0);
 
@@ -76,6 +96,8 @@ export default function ClinicalTabs({
             evolutions={evolutions}
             patientId={patient.id}
             onAdd={onAddEvolution}
+            onUpdate={onUpdateEvolution}
+            onDelete={onDeleteEvolution}
             readOnly={!onAddEvolution}
           />
         </Box>
@@ -91,6 +113,8 @@ export default function ClinicalTabs({
             cie10Options={cie10Options}
             patientId={patient.id}
             onAdd={onAddDiagnosis}
+            onUpdate={onUpdateDiagnosis}
+            onDelete={onDeleteDiagnosis}
             readOnly={!onAddDiagnosis}
           />
         </Box>
@@ -101,7 +125,12 @@ export default function ClinicalTabs({
           <Typography variant="subtitle2" color="text.secondary" gutterBottom>
             Procedimientos
           </Typography>
-          <ProceduresSection procedures={procedures} />
+          <ProceduresSection
+            procedures={procedures}
+            onAdd={onAddProcedure}
+            onUpdate={onUpdateProcedure}
+            onDelete={onDeleteProcedure}
+          />
         </Box>
       )}
 
@@ -110,7 +139,12 @@ export default function ClinicalTabs({
           <Typography variant="subtitle2" color="text.secondary" gutterBottom>
             Medicamentos formulados
           </Typography>
-          <MedicationsSection medications={medications} />
+          <MedicationsSection
+            medications={medications}
+            onAdd={onAddMedication}
+            onUpdate={onUpdateMedication}
+            onDelete={onDeleteMedication}
+          />
         </Box>
       )}
 

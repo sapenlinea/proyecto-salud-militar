@@ -4,32 +4,84 @@ import Paper from '@mui/material/Paper';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Typography from '@mui/material/Typography';
+import MedicationCrud from '../components/MedicationCrud';
+import SupplierCrud from '../components/SupplierCrud';
 import InventorySection from '../components/InventorySection';
 import MedicationKardex from '../components/MedicationKardex';
 import DispensationSection from '../components/DispensationSection';
 import ExpirationAlerts from '../components/ExpirationAlerts';
-import SuppliersSection from '../components/SuppliersSection';
 import LotsTraceability from '../components/LotsTraceability';
 import {
-  MOCK_INVENTORY,
-  MOCK_KARDEX,
   MOCK_MEDICATIONS,
+  MOCK_LOTS,
+  MOCK_KARDEX,
   MOCK_DISPENSATIONS,
   MOCK_EXPIRATION_ALERTS,
   MOCK_SUPPLIERS,
-  MOCK_LOTS,
 } from '../data/mock';
+import type { Medication, Supplier, InventoryItem } from '../types';
+
+function buildInventory(medications: Medication[], lots: typeof MOCK_LOTS): InventoryItem[] {
+  return medications.map((med) => {
+    const medLots = lots.filter((l) => l.medicationId === med.id);
+    const total = medLots.reduce((s, l) => s + l.quantity, 0);
+    return {
+      id: `inv-${med.id}`,
+      medicationId: med.id,
+      medication: med,
+      totalQuantity: total,
+      lots: medLots,
+      minStock: 100,
+      lastUpdate: new Date().toISOString(),
+      location: 'Anaquel principal',
+    };
+  });
+}
 
 export default function FarmaciaHome() {
   const [tab, setTab] = useState(0);
+  const [medications, setMedications] = useState<Medication[]>(MOCK_MEDICATIONS);
+  const [suppliers, setSuppliers] = useState<Supplier[]>(MOCK_SUPPLIERS);
 
   const medicationNameMap = useMemo(() => {
     const m = new Map<string, string>();
-    MOCK_MEDICATIONS.forEach((med) => m.set(med.id, med.name));
+    medications.forEach((med) => m.set(med.id, med.name));
     return m;
-  }, []);
+  }, [medications]);
 
   const medicationName = (id: string) => medicationNameMap.get(id) ?? id;
+
+  const inventory = useMemo(() => buildInventory(medications, MOCK_LOTS), [medications]);
+
+  const kardexMedications = medications;
+
+  function handleMedicationCreate(data: Medication) {
+    setMedications((prev) => [...prev, data]);
+  }
+
+  function handleMedicationUpdate(id: string, updates: Partial<Medication>) {
+    setMedications((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, ...updates } : m))
+    );
+  }
+
+  function handleMedicationDelete(id: string) {
+    setMedications((prev) => prev.filter((m) => m.id !== id));
+  }
+
+  function handleSupplierCreate(data: Supplier) {
+    setSuppliers((prev) => [...prev, data]);
+  }
+
+  function handleSupplierUpdate(id: string, updates: Partial<Supplier>) {
+    setSuppliers((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, ...updates } : s))
+    );
+  }
+
+  function handleSupplierDelete(id: string) {
+    setSuppliers((prev) => prev.filter((s) => s.id !== id));
+  }
 
   return (
     <Box>
@@ -42,35 +94,50 @@ export default function FarmaciaHome() {
 
       <Paper variant="outlined" sx={{ p: 2 }}>
         <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+          <Tab label="Medicamentos" />
+          <Tab label="Proveedores" />
           <Tab label="Inventario" />
           <Tab label="Kardex" />
           <Tab label="Dispensación" />
           <Tab label="Alertas vencimiento" />
-          <Tab label="Proveedores" />
           <Tab label="Lotes y trazabilidad" />
         </Tabs>
 
         {tab === 0 && (
-          <InventorySection items={MOCK_INVENTORY} />
+          <MedicationCrud
+            medications={medications}
+            onMedicationCreate={handleMedicationCreate}
+            onMedicationUpdate={handleMedicationUpdate}
+            onMedicationDelete={handleMedicationDelete}
+          />
         )}
 
         {tab === 1 && (
-          <MedicationKardex kardexEntries={MOCK_KARDEX} medications={MOCK_MEDICATIONS} />
+          <SupplierCrud
+            suppliers={suppliers}
+            onSupplierCreate={handleSupplierCreate}
+            onSupplierUpdate={handleSupplierUpdate}
+            onSupplierDelete={handleSupplierDelete}
+          />
         )}
 
         {tab === 2 && (
-          <DispensationSection dispensations={MOCK_DISPENSATIONS} />
+          <InventorySection items={inventory} />
         )}
 
         {tab === 3 && (
-          <ExpirationAlerts alerts={MOCK_EXPIRATION_ALERTS} />
+          <MedicationKardex kardexEntries={MOCK_KARDEX} medications={kardexMedications} />
         )}
 
         {tab === 4 && (
-          <SuppliersSection suppliers={MOCK_SUPPLIERS} />
+          <DispensationSection dispensations={MOCK_DISPENSATIONS} />
         )}
 
         {tab === 5 && (
+          <ExpirationAlerts alerts={MOCK_EXPIRATION_ALERTS} />
+        )}
+
+        {tab === 6 && (
           <LotsTraceability lots={MOCK_LOTS} medicationName={medicationName} />
         )}
       </Paper>
