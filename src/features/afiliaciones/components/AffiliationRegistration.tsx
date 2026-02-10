@@ -1,12 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+// @ts-ignore: No declaration file for module '@/supabaseClient'
+import { supabase } from '@/supabaseClient';
 import { EPS_OPTIONS } from '../data/mock';
-import type { AffiliationRegistration, Affiliate } from '../types.js';
+import type { AffiliationRegistration, Affiliate } from '../types';
+
+export interface TipoDocumentoRow {
+  id: number | string;
+  tipo_documento: string;
+  descripcion: string;
+}
 
 interface AffiliationRegistrationFormProps {
   onSubmit?: (data: AffiliationRegistration) => void;
@@ -27,7 +35,9 @@ const BENEFICIARY_CATEGORIES = [
 ] as const;
 
 export default function AffiliationRegistrationForm({ onSubmit }: AffiliationRegistrationFormProps) {
-  const [documentType, setDocumentType] = useState('CC');
+  const [tiposDocumento, setTiposDocumento] = useState<TipoDocumentoRow[]>([]);
+  const [tiposDocumentoLoading, setTiposDocumentoLoading] = useState(true);
+  const [documentType, setDocumentType] = useState('');
   const [documentNumber, setDocumentNumber] = useState('');
   const [firstName, setFirstName] = useState('');
   const [secondName, setSecondName] = useState('');
@@ -45,6 +55,21 @@ export default function AffiliationRegistrationForm({ onSubmit }: AffiliationReg
   const [city, setCity] = useState('');
   const [department, setDepartment] = useState('');
   const [beneficiaryCategory, setBeneficiaryCategory] = useState<Affiliate['beneficiaryCategory']>('titular');
+
+  useEffect(() => {
+    async function loadTiposDocumento() {
+      setTiposDocumentoLoading(true);
+      const { data, error } = await supabase
+        .from('Tipos_de_documento')
+        .select('*');
+      if (!error && data?.length) {
+        setTiposDocumento(data as TipoDocumentoRow[]);
+        setDocumentType((prev) => prev || (data[0] as TipoDocumentoRow).tipo_documento);
+      }
+      setTiposDocumentoLoading(false);
+    }
+    loadTiposDocumento();
+  }, []);
 
   function handleEpsChange(code: string) {
     const epsOption = EPS_OPTIONS.find((e) => e.code === code);
@@ -84,11 +109,25 @@ export default function AffiliationRegistrationForm({ onSubmit }: AffiliationReg
       </Typography>
       <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <TextField select size="small" label="Tipo documento" value={documentType} onChange={(e) => setDocumentType(e.target.value)} sx={{ minWidth: 120 }}>
-            <MenuItem value="CC">CC</MenuItem>
-            <MenuItem value="TI">TI</MenuItem>
-            <MenuItem value="CE">CE</MenuItem>
-            <MenuItem value="PA">PA</MenuItem>
+          <TextField
+            select
+            size="small"
+            label="Tipo documento"
+            value={documentType}
+            onChange={(e) => setDocumentType(e.target.value)}
+            sx={{ minWidth: 120 }}
+            disabled={tiposDocumentoLoading}
+            helperText={tiposDocumentoLoading ? 'Cargando...' : undefined}
+          >
+            {tiposDocumento.length === 0 && !tiposDocumentoLoading ? (
+              <MenuItem value="" disabled>No hay tipos de documento</MenuItem>
+            ) : (
+              tiposDocumento.map((t) => (
+                <MenuItem key={t.id} value={t.tipo_documento}>
+                  {t.descripcion}
+                </MenuItem>
+              ))
+            )}
           </TextField>
           <TextField size="small" label="Número documento" value={documentNumber} onChange={(e) => setDocumentNumber(e.target.value)} required sx={{ minWidth: 180 }} />
         </Box>
