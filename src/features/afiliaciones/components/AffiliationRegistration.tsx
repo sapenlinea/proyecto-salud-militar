@@ -5,15 +5,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-// @ts-ignore: No declaration file for module '@/supabaseClient'
-import { supabase } from '@/supabaseClient';
+import supabase  from '../../../../supabaseClient';
 import { EPS_OPTIONS } from '../data/mock';
 import type { AffiliationRegistration, Affiliate } from '../types';
 
 export interface TipoDocumentoRow {
   id: number | string;
-  tipo_documento: string;
-  descripcion: string;
+  code: string;
+  name: string;
 }
 
 interface AffiliationRegistrationFormProps {
@@ -59,14 +58,25 @@ export default function AffiliationRegistrationForm({ onSubmit }: AffiliationReg
   useEffect(() => {
     async function loadTiposDocumento() {
       setTiposDocumentoLoading(true);
-      const { data, error } = await supabase
-        .from('Tipos_de_documento')
-        .select('*');
-      if (!error && data?.length) {
-        setTiposDocumento(data as TipoDocumentoRow[]);
-        setDocumentType((prev) => prev || (data[0] as TipoDocumentoRow).tipo_documento);
+      try {
+        const { data, error } = await supabase
+          .from('document_types')
+          .select('*');
+        
+        if (error) {
+          console.error('Error loading Tipos_de_documento:', error);
+        } else if (data && Array.isArray(data)) {
+          console.log('Datos cargados:', data);
+          setTiposDocumento(data as TipoDocumentoRow[]);
+          if (data.length > 0) {
+            setDocumentType((prev) => prev || (data[0] as TipoDocumentoRow).code);
+          }
+        }
+      } catch (err) {
+        console.error('Error en loadTiposDocumento:', err);
+      } finally {
+        setTiposDocumentoLoading(false);
       }
-      setTiposDocumentoLoading(false);
     }
     loadTiposDocumento();
   }, []);
@@ -123,8 +133,8 @@ export default function AffiliationRegistrationForm({ onSubmit }: AffiliationReg
               <MenuItem value="" disabled>No hay tipos de documento</MenuItem>
             ) : (
               tiposDocumento.map((t) => (
-                <MenuItem key={t.id} value={t.tipo_documento}>
-                  {t.descripcion}
+                <MenuItem key={t.id} value={t.code}>
+                  {t.name}
                 </MenuItem>
               ))
             )}
